@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/models/enums.dart';
+import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/auth_service.dart';
 import 'package:sunday_school_attendance/app/ui/auth/login/login_controller.dart';
 
@@ -38,8 +39,7 @@ class RegisterController extends GetxController {
     );
 
     if (result.isSuccess) {
-      loginController.authUser.value = result.data;
-      Get.offAllNamed('/home');
+      Get.offAllNamed(AppRoutes.home, arguments: result.data);
     } else {
       errorMessage.value = result.error ?? '';
     }

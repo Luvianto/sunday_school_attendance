@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/models/user_model.dart';
 import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/auth_service.dart';
 
@@ -16,7 +15,6 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
 
   var isPasswordVisible = true.obs;
-  var authUser = Rxn<UserModel>();
 
   void togglePassword() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -28,8 +26,7 @@ class LoginController extends GetxController {
     final result = await authService.isAuthenticated();
     if (result.isSuccess) {
       if (result.data != null) {
-        authUser.value = result.data;
-        Get.offAllNamed(AppRoutes.home);
+        Get.offAllNamed(AppRoutes.home, arguments: result.data);
       }
     } else {
       errorMessage.value = result.error ?? 'Error tidak diketauhi';
@@ -60,8 +57,7 @@ class LoginController extends GetxController {
   Future<void> fetchUserDetail(User user) async {
     final userDetail = await authService.getUserDetail(user.uid);
     if (userDetail.isSuccess) {
-      authUser.value = userDetail.data;
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.home, arguments: userDetail.data);
     } else {
       errorMessage.value = userDetail.error ?? 'Error tidak diketauhi';
     }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sunday_school_attendance/app/models/user_model.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_page.dart';
+import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_controller.dart';
 import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_page.dart';
 import 'package:sunday_school_attendance/app/pages/session/session_page.dart';
 
@@ -43,6 +45,15 @@ class HomeController extends GetxController {
             label: item['label'] as String,
           ))
       .toList();
+
+  @override
+  void onInit() {
+    super.onInit();
+    final argument = Get.arguments;
+    if (argument is UserModel?) {
+      Get.find<ProfileController>().profile.value = argument;
+    }
+  }
 
   void changePage(int index) {
     currentIndex.value = index;

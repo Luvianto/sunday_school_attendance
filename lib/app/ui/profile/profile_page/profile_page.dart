@@ -9,10 +9,38 @@ class ProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Center(
-          child: CustomButton(onPressed: controller.logout, label: 'Logout'),
-        ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 40,
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    controller.profile.value!.fullName,
+                    style: Get.theme.textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(controller.profile.value!.email),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          CustomButton(onPressed: () {}, label: 'Edit Profil'),
+          const SizedBox(height: 16),
+          CustomButton(
+            onPressed: controller.logout,
+            label: 'Logout',
+            backgroundColor: Get.theme.colorScheme.error,
+          ),
+        ],
       ),
     );
   }
