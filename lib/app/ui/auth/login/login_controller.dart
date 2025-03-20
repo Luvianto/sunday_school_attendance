@@ -27,11 +27,16 @@ class LoginController extends GetxController {
     super.onInit();
     final result = await authService.isAuthenticated();
     if (result.isSuccess) {
-      authUser.value = result.data;
+      if (result.data != null) {
+        authUser.value = result.data;
+        Get.offAllNamed(AppRoutes.home);
+      }
     } else {
       errorMessage.value = result.error ?? 'Error tidak diketauhi';
     }
-    isLoading.value = false;
+    Future.delayed(Duration(seconds: 2), () {
+      isLoading.value = false;
+    });
   }
 
   void login() async {

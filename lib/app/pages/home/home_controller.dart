@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_page.dart';
-import 'package:sunday_school_attendance/app/pages/profile/profile_view.dart';
+import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_page.dart';
 import 'package:sunday_school_attendance/app/pages/session/session_page.dart';
 
 class HomeController extends GetxController {
@@ -20,7 +20,7 @@ class HomeController extends GetxController {
       'label': 'Murid',
     },
     {
-      'view': ProfileView(),
+      'view': ProfilePage(),
       'icon': Icons.person,
       'label': 'Profil',
     },

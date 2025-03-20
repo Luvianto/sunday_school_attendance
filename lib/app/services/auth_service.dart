@@ -71,7 +71,7 @@ class AuthService {
     if (user != null) {
       return await getUserDetail(user.uid);
     } else {
-      return ServiceResult(error: 'Error isAuth:');
+      return ServiceResult();
     }
   }
 
@@ -86,6 +86,19 @@ class AuthService {
       } else {
         return ServiceResult();
       }
+    } on FirebaseException catch (e) {
+      return ServiceResult(error: handleFirestore(e));
+    } catch (e) {
+      return ServiceResult(error: 'Error getUserDetail: $e');
+    }
+  }
+
+  Future<ServiceResult<void>> signOut() async {
+    try {
+      await _auth.signOut();
+      return ServiceResult();
+    } on FirebaseAuthException catch (e) {
+      return ServiceResult(error: handleFirebaseAuth(e));
     } on FirebaseException catch (e) {
       return ServiceResult(error: handleFirestore(e));
     } catch (e) {
