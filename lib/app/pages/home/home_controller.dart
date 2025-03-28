@@ -1,61 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/models/user_model.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_page.dart';
-import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_controller.dart';
 import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_page.dart';
-import 'package:sunday_school_attendance/app/pages/session/session_page.dart';
+import 'package:sunday_school_attendance/app/ui/student/student_list/student_list_controller.dart';
+import 'package:sunday_school_attendance/app/ui/student/student_list/student_list_page.dart';
+
+// If you want to add another page into the BottomNavigationBar, follow these steps:
+
+// 1. Add new enum, make sure the name defines your page.
+enum HomeTab { attendance, student, profile }
 
 class HomeController extends GetxController {
-  // Dibuat sebagai Map agar mudah saat
-  // merombak halaman dengan bottom navigation
+  // 2. Add a new `title` (displayed as the AppBar title on the corresponding tab)
+  final title = const {
+    HomeTab.attendance: "Absensi",
+    HomeTab.student: "Murid",
+    HomeTab.profile: "Profil",
+  };
 
-  final List<Map<String, dynamic>> navigation = [
-    {
-      'view': AttendancePage(),
-      'icon': Icons.calendar_month,
-      'label': 'Absensi',
-    },
-    {
-      'view': SessionPage(),
-      'icon': Icons.calendar_month,
-      'label': 'Murid',
-    },
-    {
-      'view': ProfilePage(),
-      'icon': Icons.person,
-      'label': 'Profil',
-    },
+  // 3. Add a new page (the content of the corresponding tab)
+  final pages = const {
+    HomeTab.attendance: AttendancePage(),
+    HomeTab.student: StudentListPage(),
+    HomeTab.profile: ProfilePage(),
+  };
+
+  // 4. Add a new item for the BottomNavigationBar
+  final items = const [
+    BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Absensi"),
+    BottomNavigationBarItem(icon: Icon(Icons.emoji_emotions), label: "Murid"),
+    BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
   ];
 
-  // Perlu dikembalikan sebagai Widget/String (as Widget/as String)
-  // Karena sebelumnya dianggap sebagai class dynamic
+  // 5. Add new actions for the AppBar, 'null' if no actions are required
+  final actions = {
+    HomeTab.attendance: [
+      IconButton(icon: const Icon(Icons.notifications), onPressed: () {})
+    ],
+    HomeTab.student: [
+      IconButton(
+        icon: Icon(
+          Icons.search,
+          color: Get.theme.primaryColor,
+        ),
+        onPressed: Get.find<StudentListController>().toSearch,
+      )
+    ],
+    HomeTab.profile: null,
+  };
 
-  var currentIndex = 0.obs;
+  // 6. Add floatingActionButton for the Scaffold, 'null' if fab is not required
+  final fab = {
+    HomeTab.attendance: null,
+    HomeTab.student: FloatingActionButton(
+      onPressed: Get.find<StudentListController>().openForm,
+      child: const Icon(Icons.add),
+    ),
+    HomeTab.profile: null,
+  };
 
-  List<Widget> get pages =>
-      navigation.map((item) => item['view'] as Widget).toList();
+  Widget get currentPage => pages[currentTab.value]!;
+  String get currentTitle => title[currentTab.value]!;
+  List<Widget>? get currentActions => actions[currentTab.value];
+  FloatingActionButton? get currentFab => fab[currentTab.value];
 
-  List<String> get labels =>
-      navigation.map((item) => item['label'] as String).toList();
-
-  List<BottomNavigationBarItem> get items => navigation
-      .map((item) => BottomNavigationBarItem(
-            icon: Icon(item['icon'] as IconData),
-            label: item['label'] as String,
-          ))
-      .toList();
-
-  @override
-  void onInit() {
-    super.onInit();
-    final argument = Get.arguments;
-    if (argument is UserModel?) {
-      Get.find<ProfileController>().profile.value = argument;
-    }
-  }
+  final currentTab = HomeTab.attendance.obs;
 
   void changePage(int index) {
-    currentIndex.value = index;
+    currentTab.value = HomeTab.values[index];
   }
 }
