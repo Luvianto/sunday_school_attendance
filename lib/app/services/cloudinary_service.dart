@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ class CloudinaryService {
 
   Future<bool> uploadProfilePicture(FilePickerResult? filePickerResult) async {
     if (filePickerResult == null || filePickerResult.files.isEmpty) {
-      print('No File Selected!');
+      debugPrint('No File Selected!');
       return false;
     }
 
@@ -33,13 +34,13 @@ class CloudinaryService {
     var response = await request.send();
 
     var responseBody = await response.stream.bytesToString();
-    print('responseBody: $responseBody');
+    debugPrint('responseBody: $responseBody');
 
     if (response.statusCode == 200) {
-      print('Upload Success');
+      debugPrint('Upload Success');
       return true;
     } else {
-      print('Upload failed with status: ${response.statusCode}');
+      debugPrint('Upload failed with status: ${response.statusCode}');
       return false;
     }
   }

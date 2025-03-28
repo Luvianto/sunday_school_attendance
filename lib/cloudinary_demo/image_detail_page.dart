@@ -59,10 +59,10 @@ class _ImageEditorPageState extends State<ImageDetailPage> {
                       final result = await cloudinaryService
                           .uploadProfilePicture(widget.selectedFile);
                       if (result) {
-                        print('Good job');
-                        Navigator.pop(context);
+                        debugPrint('Good job');
+                        // Navigator.pop(context);
                       } else {
-                        print('Not good job');
+                        debugPrint('Not good job');
                       }
                     },
                     child: Text('Upload'),

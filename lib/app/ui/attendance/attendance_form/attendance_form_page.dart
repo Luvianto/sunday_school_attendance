@@ -8,30 +8,36 @@ class AttendanceFormPage extends GetView<AttendanceFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(body: Obx(() {
-      return Form(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          children: [
-            TextFormField(
-              controller: controller.nameController,
-              decoration: const InputDecoration(labelText: 'Nama Murid'),
-              validator: (value) =>
-                  value!.isEmpty ? 'Nama murid wajib diisi' : null,
-            ),
-            //
-            const SizedBox(height: 24.0),
-            //
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: controller.saveAttendance,
-                child: const Text('Simpan'),
+    return PageLayout(
+      backInvoked: Get.back,
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Form(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            children: [
+              TextFormField(
+                controller: controller.nameController,
+                decoration: const InputDecoration(labelText: 'Nama Murid'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Nama murid wajib diisi' : null,
               ),
-            ),
-          ],
-        ),
-      );
-    }));
+              //
+              const SizedBox(height: 24.0),
+              //
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: controller.saveAttendance,
+                  child: const Text('Simpan'),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
+    );
   }
 }

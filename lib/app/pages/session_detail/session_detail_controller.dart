@@ -33,7 +33,7 @@ class SessionDetailController extends GetxController {
       if (result.isSuccess) {
         session.value = result.data;
       } else {
-        errorMessage.value = result.error!;
+        errorMessage.value = result.message!;
       }
     }
     isLoading.value = false;
@@ -47,7 +47,6 @@ class SessionDetailController extends GetxController {
       if (result == true) {
         fetchSession();
         isEdited = result;
-        print('isEdited: $isEdited');
       }
     });
   }
@@ -56,17 +55,12 @@ class SessionDetailController extends GetxController {
     Get.back(result: isEdited);
   }
 
-  Future<void> deleteSession() async {
-    if (session.value == null || session.value!.id == null) {
-      Get.snackbar("Error", "Id kosong.");
-      return;
+  void deleteSession() async {
+    if (session.value!.id == null) {
+      Get.snackbar("Error deleteSession", "Id Sesi kosong.");
     }
 
-    try {
-      await sessionService.deleteSession(session.value!.id!);
-      Get.back(result: true);
-    } catch (e) {
-      print('deleteSession: ${e.toString()}');
-    }
+    await sessionService.deleteSession(session.value!.id!);
+    Get.back(result: true);
   }
 }

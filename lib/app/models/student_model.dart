@@ -9,7 +9,7 @@ class StudentModel {
     this.profilePictureUrl,
   });
 
-  factory StudentModel.fromJson(Map<String, dynamic> json, {String? id}) {
+  factory StudentModel.fromJson(Map<String, dynamic> json, String? id) {
     return StudentModel(
       id: id,
       name: json['name'],
@@ -19,7 +19,6 @@ class StudentModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'name': name,
       'profile_picture_url': profilePictureUrl ?? '',
     };

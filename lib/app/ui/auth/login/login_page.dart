@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/utilities/input_validator.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_button.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_label.dart';
+import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_text_form_field.dart';
 import 'package:sunday_school_attendance/app/ui/auth/login/login_controller.dart';
 
@@ -15,10 +16,7 @@ class LoginPage extends GetView<LoginController> {
       body: Obx(
         () {
           if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (controller.errorMessage.isNotEmpty) {
-            return Center(child: Text(controller.errorMessage.value));
+            return CustomLoading();
           }
           return Form(
             key: controller.formKey,

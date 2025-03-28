@@ -88,7 +88,7 @@ class SessionFormController extends GetxController {
 
       Get.back(result: true);
     } catch (e) {
-      print('saveSession: $e');
+      debugPrint('saveSession: $e');
       throw e.toString();
     }
   }

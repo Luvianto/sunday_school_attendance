@@ -8,7 +8,6 @@ class LoginController extends GetxController {
   final authService = AuthService();
 
   var isLoading = true.obs;
-  var errorMessage = ''.obs;
 
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -17,49 +16,42 @@ class LoginController extends GetxController {
   var isPasswordVisible = true.obs;
 
   void togglePassword() {
-    isPasswordVisible.value = !isPasswordVisible.value;
+    isPasswordVisible.toggle();
   }
 
   @override
   void onInit() async {
     super.onInit();
     final result = await authService.isAuthenticated();
-    if (result.isSuccess) {
-      if (result.data != null) {
-        Get.offAllNamed(AppRoutes.home, arguments: result.data);
-      }
-    } else {
-      errorMessage.value = result.error ?? 'Error tidak diketauhi';
-    }
-    Future.delayed(Duration(seconds: 2), () {
+    if (result.isEmpty) {
       isLoading.value = false;
-    });
+    } else {
+      Get.offAllNamed(AppRoutes.home, arguments: result.data);
+    }
   }
 
   void login() async {
-    if (!formKey.currentState!.validate()) {
-      return null;
-    }
+    if (!formKey.currentState!.validate()) return null;
 
     isLoading.value = true;
     final result = await authService.signIn(
       emailController.text,
       passwordController.text,
     );
-    if (result.isSuccess) {
+    if (result.isNotEmpty) {
       await fetchUserDetail(result.data!);
     } else {
-      errorMessage.value = result.error ?? 'Error tidak diketauhi';
+      Get.snackbar('Error!', result.message ?? 'Error tidak diketahui');
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   Future<void> fetchUserDetail(User user) async {
-    final userDetail = await authService.getUserDetail(user.uid);
-    if (userDetail.isSuccess) {
-      Get.offAllNamed(AppRoutes.home, arguments: userDetail.data);
+    final result = await authService.getUserDetail(user.uid);
+    if (result.isNotEmpty) {
+      Get.offAllNamed(AppRoutes.home, arguments: result.data);
     } else {
-      errorMessage.value = userDetail.error ?? 'Error tidak diketauhi';
+      Get.snackbar('Error!', result.message ?? 'Error tidak diketahui');
     }
   }
 

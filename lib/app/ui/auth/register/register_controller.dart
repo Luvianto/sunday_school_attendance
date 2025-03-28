@@ -41,7 +41,7 @@ class RegisterController extends GetxController {
     if (result.isSuccess) {
       Get.offAllNamed(AppRoutes.home, arguments: result.data);
     } else {
-      errorMessage.value = result.error ?? '';
+      errorMessage.value = result.message ?? '';
     }
 
     isLoading.value = false;

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sunday_school_attendance/app/chore/handler/firebase_handler.dart';
+import 'package:sunday_school_attendance/app/chore/handler/firebase_exception.dart';
 import 'package:sunday_school_attendance/app/chore/handler/service_result.dart';
 import 'package:sunday_school_attendance/app/models/session_model.dart';
 
@@ -42,14 +42,14 @@ class SessionService {
           doc.data() as Map<String, dynamic>,
           id: doc.id,
         );
-        return ServiceResult(data: data);
+        return ServiceResult.success(data: data);
       }
 
-      return ServiceResult(error: "Sesi tidak ditemukan!");
+      return ServiceResult.failure("Sesi tidak ditemukan!");
     } on FirebaseException catch (e) {
-      return ServiceResult(error: handleFirestore(e));
+      return ServiceResult.failure(firestoreException(e));
     } catch (e) {
-      return ServiceResult(error: "Error tidak terduga: $e");
+      return ServiceResult.failure("Error getSession: $e");
     }
   }
 
@@ -57,13 +57,13 @@ class SessionService {
     try {
       await firestore.collection(collectionName).add(session.toMap());
     } catch (e) {
-      throw Exception("addSession: $e");
+      throw Exception("Error addSession: $e");
     }
   }
 
   Future<void> updateSession(SessionModel session) async {
     if (session.id == null) {
-      throw Exception("updateSession: ID kosong.");
+      throw Exception("Error updateSession: ID kosong.");
     }
 
     try {
@@ -72,7 +72,7 @@ class SessionService {
           .doc(session.id)
           .update(session.toMap());
     } catch (e) {
-      throw Exception("updateSession: $e");
+      throw Exception("Error updateSession: $e");
     }
   }
 
@@ -80,7 +80,7 @@ class SessionService {
     try {
       await firestore.collection(collectionName).doc(sessionId).delete();
     } catch (e) {
-      throw Exception("deleteSession: $e");
+      throw Exception("Error deleteSession: $e");
     }
   }
 }

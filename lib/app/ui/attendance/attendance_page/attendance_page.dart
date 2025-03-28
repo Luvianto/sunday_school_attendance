@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_card.dart';
-import 'package:sunday_school_attendance/app/common/widgets/page_layout.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_controller.dart';
 
 class AttendancePage extends GetView<AttendanceController> {
@@ -9,21 +8,22 @@ class AttendancePage extends GetView<AttendanceController> {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (controller.errorMessage.isNotEmpty) {
-          return Center(child: Text(controller.errorMessage.value));
-        }
-        if (controller.attendanceList.isEmpty) {
-          return Center(child: Text("Belum ada data!"));
-        }
-        return RefreshIndicator(
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (controller.errorMessage.isNotEmpty) {
+        return Center(child: Text(controller.errorMessage.value));
+      }
+      if (controller.attendanceList.isEmpty) {
+        return const Center(child: Text("Belum ada data!"));
+      }
+      return Scaffold(
+        body: RefreshIndicator(
           onRefresh: controller.refreshPage,
           child: ListView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: controller.attendanceList.map(
               (attendance) {
                 return CustomCard(
@@ -34,12 +34,12 @@ class AttendancePage extends GetView<AttendanceController> {
               },
             ).toList(),
           ),
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.openForm,
-        child: Icon(Icons.add),
-      ),
-    );
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.openForm,
+          child: Icon(Icons.add),
+        ),
+      );
+    });
   }
 }
