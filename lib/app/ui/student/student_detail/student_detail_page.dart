@@ -3,18 +3,20 @@ import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_app_bar.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_popup_menu_item.dart';
+import 'package:sunday_school_attendance/app/common/widgets/page_layout.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_detail/student_detail_controller.dart';
 
 class StudentDetailPage extends GetView<StudentDetailController> {
   const StudentDetailPage({super.key});
 
-  List<PopupMenuEntry<String>> buildMenuItems() {
+  List<PopupMenuItem<dynamic>> buildMenuItems() {
     return [
       CustomPopupMenuItem(
         value: 'edit',
         icon: Icons.edit_outlined,
         text: 'Edit',
         iconColor: Get.theme.colorScheme.outline,
+        onTap: controller.toEdit,
       ),
       CustomPopupMenuItem(
         value: 'delete',
@@ -29,20 +31,10 @@ class StudentDetailPage extends GetView<StudentDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        onBack: Get.back,
-        title: Text('Profil Murid'),
-        actions: [
-          Obx(
-            () => PopupMenuButton(
-              icon: const Icon(Icons.more_vert),
-              itemBuilder: (context) => buildMenuItems(),
-              enabled: controller.student.value == null ? false : true,
-            ),
-          )
-        ],
-      ),
+    return PageLayout(
+      backInvoked: () => Get.back(result: controller.isEdited),
+      title: 'Profil Murid',
+      menuItems: buildMenuItems(),
       body: RefreshIndicator(
         onRefresh: controller.refreshPage,
         child: Obx(() {

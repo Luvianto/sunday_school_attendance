@@ -18,6 +18,8 @@ import 'package:sunday_school_attendance/app/ui/auth/register/register_binding.d
 import 'package:sunday_school_attendance/app/ui/auth/register/register_page.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_detail/student_detail_binding.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_detail/student_detail_page.dart';
+import 'package:sunday_school_attendance/app/ui/student/student_edit/student_edit_page.dart';
+import 'package:sunday_school_attendance/app/ui/student/student_edit/student_edit_binding.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_form/student_form_binding.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_form/student_form_page.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_search/student_search_binding.dart';
@@ -33,6 +35,7 @@ class AppRoutes {
   static const attendance = '/attendance';
 
   static const form = '/form';
+  static const edit = '/edit';
   static const search = '/search';
 
   static final routes = [
@@ -79,6 +82,12 @@ class AppRoutes {
       name: student,
       page: () => StudentDetailPage(),
       binding: StudentDetailBinding(),
+      middlewares: [StudentMiddleware()],
+    ),
+    GetPage(
+      name: student + edit,
+      page: () => StudentEditPage(),
+      binding: StudentEditBinding(),
       middlewares: [StudentMiddleware()],
     ),
     GetPage(

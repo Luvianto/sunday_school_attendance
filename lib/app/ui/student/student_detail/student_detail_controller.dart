@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/models/student_model.dart';
+import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/student_service.dart';
 
 class StudentDetailController extends GetxController {
@@ -9,6 +10,8 @@ class StudentDetailController extends GetxController {
   var errorMessage = ''.obs;
 
   final student = Rxn<StudentModel>();
+
+  bool isEdited = false;
 
   @override
   void onInit() {
@@ -38,6 +41,17 @@ class StudentDetailController extends GetxController {
 
   void deleteStudent() {
     studentService.deleteStudent(student.value!.id!);
-    Get.back(result: true);
+  }
+
+  void toEdit() {
+    Get.toNamed(
+      AppRoutes.student + AppRoutes.edit,
+      arguments: student.value,
+    )?.then((result) {
+      if (result == true) {
+        fetchStudent();
+        isEdited = result;
+      }
+    });
   }
 }

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/utilities/input_validator.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_button.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_label.dart';
-import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_text_form_field.dart';
 import 'package:sunday_school_attendance/app/common/widgets/page_layout.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_form/student_form_controller.dart';
@@ -45,13 +44,9 @@ class StudentFormPage extends GetView<StudentFormController> {
                 //
                 const SizedBox(height: 24.0),
                 //
-                Obx(
-                  () => controller.isLoading.value
-                      ? CustomLoading()
-                      : CustomButton(
-                          onPressed: controller.saveStudents,
-                          label: 'Simpan',
-                        ),
+                CustomButton(
+                  onPressed: controller.saveStudents,
+                  label: 'Simpan',
                 ),
               ],
             );
