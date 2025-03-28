@@ -35,4 +35,9 @@ class StudentDetailController extends GetxController {
     }
     isLoading.value = false;
   }
+
+  void deleteStudent() {
+    studentService.deleteStudent(student.value!.id!);
+    Get.back(result: true);
+  }
 }

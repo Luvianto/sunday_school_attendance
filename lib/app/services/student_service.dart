@@ -7,12 +7,12 @@ class StudentService extends FirestoreInstance {
 
   Future<ServiceResult<List<StudentModel>>> getStudentList() async {
     return await getCollection(
-      firestore.collection(collectionName).get(),
+      firestore.collection(collectionName).orderBy('name').get(),
       StudentModel.fromJson,
     );
   }
 
-  Future<ServiceResult<StudentModel?>> getStudent(String studentId) async {
+  Future<ServiceResult<StudentModel>> getStudent(String studentId) async {
     return await getDocument(
       firestore.collection(collectionName).doc(studentId).get(),
       StudentModel.fromJson,

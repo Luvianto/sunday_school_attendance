@@ -22,6 +22,7 @@ class StudentDetailPage extends GetView<StudentDetailController> {
         text: 'Delete',
         iconColor: Get.theme.colorScheme.error,
         textColor: Get.theme.colorScheme.error,
+        onTap: controller.deleteStudent,
       ),
     ];
   }
@@ -33,9 +34,12 @@ class StudentDetailPage extends GetView<StudentDetailController> {
         onBack: Get.back,
         title: Text('Profil Murid'),
         actions: [
-          PopupMenuButton(
-            icon: const Icon(Icons.more_vert),
-            itemBuilder: (context) => buildMenuItems(),
+          Obx(
+            () => PopupMenuButton(
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (context) => buildMenuItems(),
+              enabled: controller.student.value == null ? false : true,
+            ),
           )
         ],
       ),
@@ -52,25 +56,16 @@ class StudentDetailPage extends GetView<StudentDetailController> {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        controller.student.value!.name,
-                        style: Get.theme.textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(controller.student.value!.name),
-                    ],
-                  ),
-                ],
+              CircleAvatar(
+                radius: 64,
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                controller.student.value!.name,
+                textAlign: TextAlign.center,
+                style: Get.theme.textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           );

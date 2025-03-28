@@ -9,7 +9,9 @@ class CustomPopupMenuItem extends PopupMenuItem<String> {
     required String text,
     Color? iconColor,
     Color? textColor,
+    void Function()? onTap,
   }) : super(
+          onTap: onTap,
           value: value,
           child: Row(
             children: [

@@ -25,7 +25,7 @@ class FirestoreInstance {
     }
   }
 
-  Future<ServiceResult<T?>> getDocument<T>(
+  Future<ServiceResult<T>> getDocument<T>(
     Future<DocumentSnapshot<Map<String, dynamic>>> query,
     T Function(Map<String, dynamic>, String) fromJson,
   ) async {
