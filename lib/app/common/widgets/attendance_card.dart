@@ -18,10 +18,12 @@ class _AttendanceCardState extends State<AttendanceCard> {
   bool isPresent = false;
 
   void togglePresent(void Function()? onTap) {
-    setState(() {
-      isPresent = !isPresent;
-    });
-    if (onTap != null) onTap();
+    if (onTap != null) {
+      onTap();
+      setState(() {
+        isPresent = !isPresent;
+      });
+    }
   }
 
   @override
