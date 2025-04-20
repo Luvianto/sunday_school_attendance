@@ -14,12 +14,6 @@ class StudentListPage extends GetView<StudentListController> {
       child: Stack(
         children: [
           Obx(() {
-            if (controller.isLoading.value) {
-              return const SizedBox.shrink();
-            }
-            if (controller.errorMessage.value.isNotEmpty) {
-              return const SizedBox.shrink();
-            }
             return ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
