@@ -2,28 +2,25 @@ import 'package:sunday_school_attendance/app/models/enums.dart';
 import 'package:sunday_school_attendance/app/models/student_model.dart';
 
 class StudentAttendanceModel {
-  final String studentId;
-  final String studentName;
+  final StudentModel student;
   final AttendanceStatus attendanceStatus;
 
   StudentAttendanceModel({
-    required this.studentId,
-    required this.studentName,
+    required this.student,
     required this.attendanceStatus,
   });
 
   factory StudentAttendanceModel.fromStudent(StudentModel student) {
     return StudentAttendanceModel(
-      studentId: student.id!,
-      studentName: student.name,
+      student: student,
       attendanceStatus: AttendanceStatus.absent,
     );
   }
 
-  factory StudentAttendanceModel.fromFirestore(Map<String, dynamic> json) {
+  factory StudentAttendanceModel.fromFirestore(
+      Map<String, dynamic> json, String? id) {
     return StudentAttendanceModel(
-      studentId: json['student_id'],
-      studentName: json['student_name'],
+      student: StudentModel.fromFirestore(json['student'], id),
       attendanceStatus: AttendanceStatus.values.firstWhere(
         (e) => e.name == json['attendance_status'],
       ),
@@ -32,8 +29,7 @@ class StudentAttendanceModel {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'student_id': studentId,
-      'student_name': studentName,
+      'student': student.toFirestore(),
       'attendance_status': attendanceStatus.name,
     };
   }
