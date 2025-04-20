@@ -29,7 +29,7 @@ class StudentFormController extends GetxController {
     isLoading.value = true;
 
     List<StudentModel> studentList = nameControllers
-        .map((controller) => StudentModel(name: controller.text))
+        .map((controller) => StudentModel(name: controller.text, status: true))
         .toList();
 
     int addedStudent = 0;
