@@ -20,7 +20,7 @@ class PageLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Dengan suatu alasan butuh kedua atribut
+        // Dengan suatu alasan butuh kedua atribut harus ada
         // (backgroundColor dan surfaceTintColor)
         // Supaya AppBar tidak berubah warna saat halaman discroll
         backgroundColor: Theme.of(context).colorScheme.surface,
