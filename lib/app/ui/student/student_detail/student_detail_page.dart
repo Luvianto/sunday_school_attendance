@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/common/widgets/custom_app_bar.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_popup_menu_item.dart';
 import 'package:sunday_school_attendance/app/common/widgets/page_layout.dart';
