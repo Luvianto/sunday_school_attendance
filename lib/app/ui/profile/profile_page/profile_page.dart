@@ -22,7 +22,7 @@ class ProfilePage extends GetView<ProfileController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    controller.profile.value!.fullName,
+                    controller.profile.value!.name,
                     style: Get.theme.textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

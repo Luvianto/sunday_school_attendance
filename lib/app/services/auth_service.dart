@@ -35,7 +35,7 @@ class AuthService extends FirestoreInstance {
   Future<ServiceResult<UserModel>> signUp(
     String email,
     String password,
-    String fullName,
+    String name,
     UserRole role,
   ) async {
     try {
@@ -54,7 +54,7 @@ class AuthService extends FirestoreInstance {
 
       final userModel = UserModel(
         id: user.uid,
-        fullName: fullName,
+        name: name,
         email: email,
         role: role,
       );

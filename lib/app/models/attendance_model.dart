@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sunday_school_attendance/app/models/enums.dart';
-import 'package:sunday_school_attendance/app/models/student_attendance_model.dart';
+import 'package:sunday_school_attendance/app/models/student_model.dart';
 
 class AttendanceModel {
   final String? id;
   final Timestamp timestamp;
   final SessionType sessionType;
-  final List<StudentAttendanceModel> studentAttendanceList;
+  final List<StudentModel> studentList;
 
   AttendanceModel({
     this.id,
     required this.timestamp,
     required this.sessionType,
-    required this.studentAttendanceList,
+    required this.studentList,
   });
 
   factory AttendanceModel.fromFirestore(Map<String, dynamic> json, String? id) {
@@ -22,8 +22,8 @@ class AttendanceModel {
       sessionType: SessionType.values.firstWhere(
         (e) => e.name == json['session_type'],
       ),
-      studentAttendanceList: (json['student_attendance_list'] as List)
-          .map((student) => StudentAttendanceModel.fromFirestore(student))
+      studentList: (json['student_list'] as List<Map<String, dynamic>>)
+          .map((student) => StudentModel.fromFirestore(student, student['id']))
           .toList(),
     );
   }
@@ -32,8 +32,7 @@ class AttendanceModel {
     return {
       'timestamp': timestamp,
       'session_type': sessionType.name,
-      'student_attendance_list':
-          studentAttendanceList.map((e) => e.toFirestore()).toList()
+      'student_list': studentList.map((e) => e.toFirestore()).toList()
     };
   }
 }
