@@ -25,7 +25,8 @@ class StudentEditController extends GetxController {
 
   void editStudent() async {
     isLoading.value = true;
-    final newStudent = StudentModel(id: student.id, name: nameController.text);
+    final newStudent = StudentModel(
+        id: student.id, name: nameController.text, status: student.status);
     final result = await studentService.updateStudent(newStudent);
     if (result.isSuccess) {
       Get.back(result: true);
