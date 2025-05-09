@@ -1,50 +1,76 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/models/session_model.dart';
+import 'package:sunday_school_attendance/app/models/attendance_model.dart';
+import 'package:sunday_school_attendance/app/models/enums.dart';
+import 'package:sunday_school_attendance/app/models/student_model.dart';
 import 'package:sunday_school_attendance/app/services/attendance_service.dart';
+import 'package:sunday_school_attendance/app/services/student_service.dart';
 
 class AttendanceFormController extends GetxController {
+  final studentService = StudentService();
   final attendanceService = AttendanceService();
-  SessionModel? attendance;
 
-  final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
+  final sessionTypeList = SessionType.values;
+  var selectedSession = SessionType.morning.obs;
 
   var isLoading = true.obs;
+  var errorMessage = ''.obs;
+
+  var studentList = <StudentModel>[].obs;
+  var presentStudents = <StudentModel>[];
 
   @override
   void onInit() {
     super.onInit();
-    fetchAttendance();
-  }
-
-  void fetchAttendance() {
-    final arguments = Get.arguments;
-    if (arguments is SessionModel) {
-      attendance = arguments;
-      nameController.text = attendance!.name;
-    }
+    fetchStudentList();
     isLoading.value = false;
   }
 
-  void saveAttendance() async {
-    try {
-      // final newAttendance = SessionModel(
-      //   id: attendance?.id,
-      //   name: nameController.text,
+  Future<void> refreshPage() async {
+    isLoading.value = true;
 
-      // );
+    presentStudents = [];
+    studentList.value = [];
+    await fetchStudentList();
 
-      // if (session != null && session!.id != null) {
-      //   await sessionService.updateSession(newSession);
-      // } else {
-      //   await sessionService.addSession(newSession);
-      // }
+    Future.delayed(Duration(seconds: 2), () {
+      isLoading.value = false;
+    });
+  }
 
-      Get.back(result: true);
-    } catch (e) {
-      debugPrint('saveSession: $e');
-      throw e.toString();
+  Future<void> fetchStudentList() async {
+    final result = await studentService.getStudentList();
+    if (result.isSuccess && result.isNotEmpty) {
+      studentList.value = result.data!;
     }
+    if (result.isEmpty) {
+      errorMessage.value =
+          'Belum ada murid untuk diabsen!\nTambahkan murid terlebih dahulu!';
+    }
+    if (result.isError) {
+      errorMessage.value = result.message!;
+    }
+  }
+
+  void onSelect(SessionType? value) {
+    selectedSession.value = value!;
+  }
+
+  void toggleStatus(StudentModel student) {
+    if (presentStudents.contains(student)) {
+      presentStudents.remove(student);
+    } else {
+      presentStudents.add(student);
+    }
+  }
+
+  void saveAttendance() {
+    final attendance = AttendanceModel(
+      timestamp: Timestamp.now(),
+      sessionType: selectedSession.value,
+      studentList: presentStudents,
+    );
+    attendanceService.addAttendance(attendance);
+    Get.back();
   }
 }
