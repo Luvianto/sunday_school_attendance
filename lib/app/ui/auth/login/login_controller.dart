@@ -41,7 +41,8 @@ class LoginController extends GetxController {
     if (result.isNotEmpty) {
       await fetchUserDetail(result.data!);
     } else {
-      Get.snackbar('Error!', result.message ?? 'Error tidak diketahui');
+      Get.snackbar(
+          'Terjadi Kesalahan!', result.message ?? 'Error tidak diketahui');
       isLoading.value = false;
     }
   }
