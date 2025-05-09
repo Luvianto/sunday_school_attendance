@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/models/enums.dart';
+import 'package:sunday_school_attendance/app/models/user_model.dart';
 import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/auth_service.dart';
 import 'package:sunday_school_attendance/app/ui/auth/login/login_controller.dart';
@@ -10,12 +12,11 @@ class RegisterController extends GetxController {
   final authService = AuthService();
 
   var isLoading = false.obs;
-  var errorMessage = ''.obs;
 
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final fullNameController = TextEditingController();
+  final nameController = TextEditingController();
   final role = UserRole.user; // Default role
 
   var isPasswordVisible = true.obs;
@@ -34,16 +35,31 @@ class RegisterController extends GetxController {
     final result = await authService.signUp(
       emailController.text.trim(),
       passwordController.text.trim(),
-      fullNameController.text.trim(),
-      role,
     );
 
     if (result.isSuccess) {
-      Get.offAllNamed(AppRoutes.home, arguments: result.data);
+      createUserData(result.data!);
     } else {
-      errorMessage.value = result.message ?? '';
+      Get.snackbar('Error!', result.message ?? 'Error tidak diketahui');
+      isLoading.value = false;
     }
+  }
 
-    isLoading.value = false;
+  void createUserData(User user) async {
+    final newUser = UserModel(
+      id: user.uid,
+      name: nameController.text.trim(),
+      email: emailController.text.trim(),
+      role: role,
+    );
+
+    final result = await authService.addUser(newUser);
+
+    if (result.isSuccess) {
+      Get.offAllNamed(AppRoutes.home, arguments: newUser);
+    } else {
+      Get.snackbar('Error!', result.message ?? 'Error tidak diketahui');
+      isLoading.value = false;
+    }
   }
 }
