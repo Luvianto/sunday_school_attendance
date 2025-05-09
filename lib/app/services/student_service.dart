@@ -8,26 +8,27 @@ class StudentService extends FirestoreInstance {
   Future<ServiceResult<List<StudentModel>>> getStudentList() async {
     return await getCollection(
       firestore.collection(collectionName).orderBy('name').get(),
-      StudentModel.fromJson,
+      StudentModel.fromFirestore,
     );
   }
 
   Future<ServiceResult<StudentModel>> getStudent(String studentId) async {
     return await getDocument(
       firestore.collection(collectionName).doc(studentId).get(),
-      StudentModel.fromJson,
+      StudentModel.fromFirestore,
     );
   }
 
   Future<ServiceResult> addStudent(StudentModel student) async {
-    return await addDocument(collectionName, student.toJson());
+    return await addDocument(collectionName, student.toFirestore());
   }
 
   Future<ServiceResult> updateStudent(StudentModel student) async {
     if (student.id == null) {
       return ServiceResult.failure("ID murid tidak ditemukan!");
     }
-    return await updateDocument(collectionName, student.id!, student.toJson());
+    return await updateDocument(
+        collectionName, student.id!, student.toFirestore());
   }
 
   Future<ServiceResult> deleteStudent(String studentId) async {
