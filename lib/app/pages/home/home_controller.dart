@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_controller.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_page/attendance_page.dart';
 import 'package:sunday_school_attendance/app/ui/profile/profile_page/profile_page.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_list/student_list_controller.dart';
@@ -34,9 +35,7 @@ class HomeController extends GetxController {
 
   // 5. Add new actions for the AppBar, 'null' if no actions are required
   final actions = {
-    HomeTab.attendance: [
-      IconButton(icon: const Icon(Icons.notifications), onPressed: () {})
-    ],
+    HomeTab.attendance: null,
     HomeTab.student: [
       IconButton(
         icon: Icon(
@@ -51,7 +50,10 @@ class HomeController extends GetxController {
 
   // 6. Add floatingActionButton for the Scaffold, 'null' if fab is not required
   final fab = {
-    HomeTab.attendance: null,
+    HomeTab.attendance: FloatingActionButton(
+      onPressed: Get.find<AttendanceController>().openForm,
+      child: const Icon(Icons.add),
+    ),
     HomeTab.student: FloatingActionButton(
       onPressed: Get.find<StudentListController>().openForm,
       child: const Icon(Icons.add),
