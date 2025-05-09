@@ -22,7 +22,7 @@ class AttendanceModel {
       sessionType: SessionType.values.firstWhere(
         (e) => e.name == json['session_type'],
       ),
-      studentList: (json['student_list'] as List<Map<String, dynamic>>)
+      studentList: (json['student_list'] as List)
           .map((student) => StudentModel.fromFirestore(student, student['id']))
           .toList(),
     );
