@@ -3,7 +3,6 @@ import 'package:sunday_school_attendance/app/chore/handler/firebase_exception.da
 import 'package:sunday_school_attendance/app/chore/handler/service_result.dart';
 import 'package:sunday_school_attendance/app/chore/instance/firestore_instance.dart';
 import 'package:sunday_school_attendance/app/models/user_model.dart';
-import 'package:sunday_school_attendance/app/models/enums.dart';
 
 class AuthService extends FirestoreInstance {
   final _auth = FirebaseAuth.instance;
@@ -32,11 +31,9 @@ class AuthService extends FirestoreInstance {
     }
   }
 
-  Future<ServiceResult<UserModel>> signUp(
+  Future<ServiceResult<User>> signUp(
     String email,
     String password,
-    String name,
-    UserRole role,
   ) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -52,16 +49,7 @@ class AuthService extends FirestoreInstance {
         );
       }
 
-      final userModel = UserModel(
-        id: user.uid,
-        name: name,
-        email: email,
-        role: role,
-      );
-
-      await updateDocument(_collectionName, user.uid, userModel.toJson());
-
-      return ServiceResult.success();
+      return ServiceResult.success(data: user);
     } on FirebaseAuthException catch (e) {
       return ServiceResult.failure(firebaseAuthException(e));
     } on FirebaseException catch (e) {
@@ -83,13 +71,27 @@ class AuthService extends FirestoreInstance {
   Future<ServiceResult<UserModel?>> getUserDetail(String uid) async {
     return await getDocument(
       firestore.collection(_collectionName).doc(uid).get(),
-      UserModel.fromJson,
+      UserModel.fromFirestore,
     );
   }
 
   Future<ServiceResult<void>> signOut() async {
     try {
       await _auth.signOut();
+      return ServiceResult.success();
+    } on FirebaseAuthException catch (e) {
+      return ServiceResult.failure(firebaseAuthException(e));
+    } catch (e) {
+      return ServiceResult.failure('signOut: $e');
+    }
+  }
+
+  Future<ServiceResult> addUser(UserModel newUser) async {
+    try {
+      await firestore
+          .collection(_collectionName)
+          .doc(newUser.id!)
+          .set(newUser.toFirestore());
       return ServiceResult.success();
     } on FirebaseAuthException catch (e) {
       return ServiceResult.failure(firebaseAuthException(e));
