@@ -15,7 +15,7 @@ class UserModel {
     this.profilePictureUrl,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json, String? id) {
+  factory UserModel.fromFirestore(Map<String, dynamic> json, String? id) {
     return UserModel(
       id: id,
       name: json['name'],
@@ -25,9 +25,8 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
       'name': name,
       'email': email,
       'role': role.name,
