@@ -21,7 +21,7 @@ class StudentDetailController extends GetxController {
 
   Future<void> refreshPage() async {}
 
-  Future<void> fetchStudent() async {
+  void fetchStudent() async {
     isLoading.value = true;
     final argument = Get.arguments;
     if (argument is StudentModel) {
