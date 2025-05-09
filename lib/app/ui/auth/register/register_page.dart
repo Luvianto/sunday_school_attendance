@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/utilities/input_validator.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_button.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_label.dart';
+import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_text_form_field.dart';
 import 'package:sunday_school_attendance/app/ui/auth/register/register_controller.dart';
 
@@ -33,10 +34,10 @@ class RegisterPage extends GetView<RegisterController> {
             //
             const SizedBox(height: 80.0),
             //
-            CustomLabel(label: 'Full Name'),
+            CustomLabel(label: 'Nama Panjang'),
             CustomTextFormField(
               hintText: 'Nama panjang Anda',
-              controller: controller.fullNameController,
+              controller: controller.nameController,
               validator: emptyValidator,
             ),
             //
@@ -71,9 +72,13 @@ class RegisterPage extends GetView<RegisterController> {
             //
             const SizedBox(height: 24.0),
             //
-            CustomButton(
-              label: 'REGISTER',
-              onPressed: controller.register,
+            Obx(
+              () => controller.isLoading.value
+                  ? CustomLoading()
+                  : CustomButton(
+                      label: 'REGISTER',
+                      onPressed: controller.register,
+                    ),
             ),
             //
             const SizedBox(height: 36.0),
