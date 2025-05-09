@@ -28,7 +28,9 @@ class HomePage extends GetView<HomeController> {
           currentIndex: controller.currentTab.value.index,
         ),
       ),
-      floatingActionButton: controller.currentFab,
+      floatingActionButton: Obx(
+        () => controller.currentFab ?? SizedBox.shrink(),
+      ),
     );
   }
 }
