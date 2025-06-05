@@ -2,9 +2,10 @@ platform :ios, '13.0'
 
 target 'Runner' do
   use_frameworks!
-
-  pod 'Firebase/Core',
-  pod 'Firebase/Firestore',
+  
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Auth'
 end
 
 post_install do |installer|
@@ -14,4 +15,3 @@ post_install do |installer|
     end
   end
 end
-
