@@ -76,5 +76,4 @@ cmake-build-release/
 # Google API keys and other resources
 GoogleService-Info.plist
 google-services.json
-firebase_options.dart
 firebase.json
