@@ -10,6 +10,7 @@ class StudentDetailController extends GetxController {
   var errorMessage = ''.obs;
 
   final student = Rxn<StudentModel>();
+  var imageBase64 = ''.obs;
 
   bool isEdited = false;
 
@@ -28,6 +29,7 @@ class StudentDetailController extends GetxController {
       final result = await studentService.getStudent(argument.id!);
       if (result.isSuccess && result.isNotEmpty) {
         student.value = result.data!;
+        imageBase64.value = student.value!.profilePicture!;
       }
       if (result.isEmpty) {
         errorMessage.value = 'Data tidak ditemukan!\nKembali ke halaman utama!';

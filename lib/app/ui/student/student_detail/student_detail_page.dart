@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
@@ -46,9 +48,29 @@ class StudentDetailPage extends GetView<StudentDetailController> {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: [
-              CircleAvatar(
-                radius: 64,
-              ),
+              controller.imageBase64.value.isNotEmpty
+                  ? Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 128,
+                        height: 128,
+                        child: ClipOval(
+                          child: Image.memory(
+                            base64Decode(controller.imageBase64.value),
+                            fit: BoxFit.cover,
+                            width: 32,
+                            height: 64,
+                          ),
+                        ),
+                      ),
+                    )
+                  : CircleAvatar(
+                      radius: 64,
+                      child: Text(
+                        controller.student.value!.name[0].toUpperCase(),
+                        style: Get.theme.textTheme.headlineLarge,
+                      ),
+                    ),
               const SizedBox(height: 16.0),
               Text(
                 controller.student.value!.name,

@@ -2,13 +2,13 @@ class StudentModel {
   final String? id;
   final String name;
   final bool status; // Whether the student is still active or not
-  final String? profilePictureUrl;
+  final String? profilePicture;
 
   StudentModel({
     this.id,
     required this.name,
     required this.status,
-    this.profilePictureUrl,
+    this.profilePicture,
   });
 
   factory StudentModel.fromFirestore(Map<String, dynamic> json, String? id) {
@@ -16,7 +16,7 @@ class StudentModel {
       id: id,
       name: json['name'],
       status: json['status'],
-      profilePictureUrl: json['profile_picture_url'],
+      profilePicture: json['profile_picture'],
     );
   }
 
@@ -24,7 +24,7 @@ class StudentModel {
     return {
       'name': name,
       'status': status,
-      'profile_picture_url': profilePictureUrl ?? '',
+      'profile_picture': profilePicture ?? '',
     };
   }
 }
