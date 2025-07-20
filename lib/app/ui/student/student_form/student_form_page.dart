@@ -25,10 +25,9 @@ class StudentFormPage extends GetView<StudentFormController> {
                 CustomLabel(label: 'Nama Panjang'),
                 CustomTextFormField(
                   hintText: 'Nama Panjang',
-                  controller: controller.nameControllers,
+                  controller: controller.nameController,
                   validator: emptyValidator,
                 ),
-                const SizedBox(height: 16.0),
                 //
                 const SizedBox(height: 24.0),
                 //

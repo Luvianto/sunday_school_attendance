@@ -7,20 +7,33 @@ class StudentFormController extends GetxController {
   final studentService = StudentService();
 
   final formKey = GlobalKey<FormState>();
-  final nameControllers = TextEditingController();
+  final nameController = TextEditingController();
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+
+  late StudentModel student;
+
+  @override
+  void onInit() {
+    super.onInit();
+    final argument = Get.arguments;
+    if (argument is StudentModel) {
+      student = argument;
+      nameController.text = student.name;
+    }
+  }
 
   void saveStudents() async {
     if (isLoading.value) return;
     if (!formKey.currentState!.validate()) return;
     isLoading.value = true;
-    final student =
-        StudentModel(name: nameControllers.text.trim(), status: true);
+    final newStudent = StudentModel(
+        id: student.id, name: nameController.text.trim(), status: true);
 
-    debugPrint('${student.name} sedang ditambah...');
-    final result = await studentService.addStudent(student);
+    final result = student.id != null
+        ? await studentService.updateStudent(newStudent)
+        : await studentService.addStudent(newStudent);
     if (result.isSuccess) {
       Get.back(result: true);
     }

@@ -45,7 +45,7 @@ class StudentDetailController extends GetxController {
 
   void toEdit() {
     Get.toNamed(
-      AppRoutes.student + AppRoutes.edit,
+      AppRoutes.student + AppRoutes.form,
       arguments: student.value,
     )?.then((result) {
       if (result == true) {

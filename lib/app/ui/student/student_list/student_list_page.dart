@@ -21,10 +21,10 @@ class StudentListPage extends GetView<StudentListController> {
                         title: Text(student.name),
                         leading: CircleAvatar(
                           radius: 16,
-                          backgroundImage: student.profilePictureUrl != null ||
-                                  student.profilePictureUrl!.isNotEmpty
-                              ? NetworkImage(student.profilePictureUrl!)
-                              : null,
+                          // backgroundImage: student.profilePictureUrl != null ||
+                          //         student.profilePictureUrl!.isNotEmpty
+                          //     ? NetworkImage(student.profilePictureUrl!)
+                          //     : null,
                           child: student.profilePictureUrl == null ||
                                   student.profilePictureUrl!.isEmpty
                               ? Text(student.name[0].toUpperCase())
