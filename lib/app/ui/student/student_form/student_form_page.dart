@@ -19,35 +19,25 @@ class StudentFormPage extends GetView<StudentFormController> {
         key: controller.formKey,
         child: Obx(
           () {
-            final length = controller.nameControllers.length;
             return ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: [
-                ...[
-                  for (int i = 0; i < length; i++) ...[
-                    CustomLabel(label: 'Murid ke-${i + 1}'),
-                    CustomTextFormField(
-                      hintText: 'Nama murid',
-                      controller: controller.nameControllers[i],
-                      validator: emptyValidator,
-                    ),
-                    const SizedBox(height: 16.0),
-                  ],
-                ],
-                //
-                const SizedBox(height: 8.0),
-                //
-                ElevatedButton(
-                  onPressed: controller.addNameField,
-                  child: Icon(Icons.add),
+                CustomLabel(label: 'Nama Panjang'),
+                CustomTextFormField(
+                  hintText: 'Nama Panjang',
+                  controller: controller.nameControllers,
+                  validator: emptyValidator,
                 ),
+                const SizedBox(height: 16.0),
                 //
                 const SizedBox(height: 24.0),
                 //
-                CustomButton(
-                  onPressed: controller.saveStudents,
-                  label: 'Simpan',
-                ),
+                controller.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : CustomButton(
+                        onPressed: controller.saveStudents,
+                        label: 'Simpan',
+                      ),
               ],
             );
           },
