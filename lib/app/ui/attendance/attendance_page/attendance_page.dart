@@ -19,7 +19,7 @@ class AttendancePage extends GetView<AttendanceController> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: controller.attendanceList
                   .map((attendance) => CustomCard(
-                        title: attendance.sessionType.name,
+                        title: attendance.timestamp.toString(),
                         subtitle: attendance.timestamp.toString(),
                         onTap: () => controller.toDetail(attendance),
                       ))

@@ -19,14 +19,15 @@ class AttendanceFormPage extends GetView<AttendanceFormController> {
           children: [
             Obx(() {
               return ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  children: controller.studentList
-                      .map((student) => AttendanceCard(
-                            title: student.name,
-                            onTap: () => controller.toggleStatus(student),
-                          ))
-                      .toList());
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                children: controller.studentList
+                    .map((student) => AttendanceCard(
+                          title: student.name,
+                          onTap: () => controller.toggleStatus(student),
+                        ))
+                    .toList(),
+              );
             }),
             Obx(() {
               if (controller.isLoading.value) {

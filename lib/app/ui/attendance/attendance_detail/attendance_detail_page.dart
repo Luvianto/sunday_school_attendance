@@ -63,7 +63,7 @@ class AttendanceDetailPage extends GetView<AttendanceDetailController> {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               children: [
                 Text(
-                  controller.attendance.value!.sessionType.name,
+                  controller.attendance.value!.timestamp.toString(),
                   style: Get.theme.textTheme.headlineLarge,
                 ),
                 //

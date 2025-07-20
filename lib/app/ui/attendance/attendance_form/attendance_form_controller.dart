@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/models/attendance_model.dart';
-import 'package:sunday_school_attendance/app/models/enums.dart';
 import 'package:sunday_school_attendance/app/models/student_model.dart';
 import 'package:sunday_school_attendance/app/services/attendance_service.dart';
 import 'package:sunday_school_attendance/app/services/student_service.dart';
@@ -9,9 +8,6 @@ import 'package:sunday_school_attendance/app/services/student_service.dart';
 class AttendanceFormController extends GetxController {
   final studentService = StudentService();
   final attendanceService = AttendanceService();
-
-  final sessionTypeList = SessionType.values;
-  var selectedSession = SessionType.morning.obs;
 
   var isLoading = true.obs;
   var errorMessage = ''.obs;
@@ -52,10 +48,6 @@ class AttendanceFormController extends GetxController {
     }
   }
 
-  void onSelect(SessionType? value) {
-    selectedSession.value = value!;
-  }
-
   void toggleStatus(StudentModel student) {
     if (presentStudents.contains(student)) {
       presentStudents.remove(student);
@@ -67,8 +59,6 @@ class AttendanceFormController extends GetxController {
   void saveAttendance() {
     final attendance = AttendanceModel(
       timestamp: Timestamp.now(),
-      sessionType: selectedSession.value,
-      studentList: presentStudents,
     );
     attendanceService.addAttendance(attendance);
     Get.back();
