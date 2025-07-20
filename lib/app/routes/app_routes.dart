@@ -1,13 +1,8 @@
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/middlewares/attendance_middleware.dart';
-import 'package:sunday_school_attendance/app/common/middlewares/session_middleware.dart';
 import 'package:sunday_school_attendance/app/common/middlewares/student_middleware.dart';
 import 'package:sunday_school_attendance/app/pages/home/home_binding.dart';
 import 'package:sunday_school_attendance/app/pages/home/home_page.dart';
-import 'package:sunday_school_attendance/app/pages/session_detail/session_detail_binding.dart';
-import 'package:sunday_school_attendance/app/pages/session_detail/session_detail_page.dart';
-import 'package:sunday_school_attendance/app/pages/session_form/session_form_binding.dart';
-import 'package:sunday_school_attendance/app/pages/session_form/session_form_page.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_detail/attendance_detail_binding.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_detail/attendance_detail_page.dart';
 import 'package:sunday_school_attendance/app/ui/attendance/attendance_form/attendance_form_binding.dart';
@@ -28,12 +23,10 @@ class AppRoutes {
   static const register = '/register';
 
   static const home = '/home';
-  static const session = '/session';
   static const student = '/student';
   static const attendance = '/attendance';
 
   static const form = '/form';
-  static const edit = '/edit';
   static const search = '/search';
 
   static final routes = [
@@ -51,18 +44,6 @@ class AppRoutes {
       name: home,
       page: () => HomePage(),
       binding: HomeBinding(),
-    ),
-    GetPage(
-      name: session,
-      page: () => SessionDetailPage(),
-      binding: SessionDetailBinding(),
-      middlewares: [SessionMiddleware()],
-    ),
-    GetPage(
-      name: session + form,
-      page: () => SessionFormPage(),
-      binding: SessionFormBinding(),
-      middlewares: [SessionMiddleware()],
     ),
     GetPage(
       name: attendance,
