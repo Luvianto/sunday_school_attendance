@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/common/widgets/custom_card.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_loading.dart';
 import 'package:sunday_school_attendance/app/ui/student/student_list/student_list_controller.dart';
 
@@ -18,9 +17,14 @@ class StudentListPage extends GetView<StudentListController> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: controller.studentList
-                  .map((student) => CustomCard(
-                        title: student.name,
-                        subtitle: student.name,
+                  .map((student) => ListTile(
+                        title: Text(student.name),
+                        leading: CircleAvatar(
+                          radius: 16,
+                          // backgroundImage: student.photoUrl != null
+                          //     ? NetworkImage(student.photoUrl!)
+                          //     : null,
+                        ),
                         onTap: () => controller.toDetail(student),
                       ))
                   .toList(),
