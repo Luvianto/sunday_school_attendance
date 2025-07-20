@@ -27,14 +27,7 @@ class PageLayout extends StatelessWidget {
         surfaceTintColor: Theme.of(context).colorScheme.surface,
         shadowColor: Theme.of(context).colorScheme.outlineVariant,
         automaticallyImplyLeading: false,
-        title: title != null
-            ? Text(
-                title!,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            : null,
+        title: title != null ? Text(title!) : null,
         // Untuk sekarang leading yang paling umum cuman BackButton
         leading: backInvoked != null
             ? IconButton(

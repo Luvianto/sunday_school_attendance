@@ -32,7 +32,6 @@ class StudentDetailPage extends GetView<StudentDetailController> {
   Widget build(BuildContext context) {
     return PageLayout(
       backInvoked: () => Get.back(result: controller.isEdited),
-      title: 'Profil Murid',
       menuItems: buildMenuItems(),
       body: RefreshIndicator(
         onRefresh: controller.refreshPage,
@@ -50,7 +49,7 @@ class StudentDetailPage extends GetView<StudentDetailController> {
               CircleAvatar(
                 radius: 64,
               ),
-              const SizedBox(height: 4.0),
+              const SizedBox(height: 16.0),
               Text(
                 controller.student.value!.name,
                 textAlign: TextAlign.center,
@@ -58,6 +57,11 @@ class StudentDetailPage extends GetView<StudentDetailController> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Divider(
+                color: Get.theme.colorScheme.outline,
+                indent: 64,
+                endIndent: 64,
+              )
             ],
           );
         }),
