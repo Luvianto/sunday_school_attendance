@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sunday_school_attendance/app/common/widgets/page_layout.dart';
-import 'package:sunday_school_attendance/app/common/utilities/convert_time_of_day.dart';
+import 'package:sunday_school_attendance/app/common/util/convert_time_of_day.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_card.dart';
 import 'package:sunday_school_attendance/app/pages/session/session_controller.dart';
 

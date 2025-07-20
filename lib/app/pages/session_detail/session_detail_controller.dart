@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/common/utilities/convert_time_of_day.dart';
+import 'package:sunday_school_attendance/app/common/util/convert_time_of_day.dart';
 import 'package:sunday_school_attendance/app/models/session_model.dart';
 import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/session_service.dart';

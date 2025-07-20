@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunday_school_attendance/app/common/utilities/convert_time_of_day.dart';
+import 'package:sunday_school_attendance/app/common/util/convert_time_of_day.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_confirm_dialog.dart';
 import 'package:sunday_school_attendance/app/common/widgets/custom_time_picker.dart';
 import 'package:sunday_school_attendance/app/models/session_model.dart';
