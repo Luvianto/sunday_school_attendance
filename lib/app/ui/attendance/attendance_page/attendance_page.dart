@@ -22,6 +22,7 @@ class AttendancePage extends GetView<AttendanceController> {
                 SizedBox(
                   height: 400,
                   child: TableCalendar(
+                    locale: 'id_ID',
                     firstDay: controller.firstDay,
                     lastDay: controller.lastDay,
                     startingDayOfWeek: StartingDayOfWeek.monday,
@@ -34,12 +35,14 @@ class AttendancePage extends GetView<AttendanceController> {
                     headerStyle: HeaderStyle(
                       titleCentered: true,
                       formatButtonVisible: false,
+                      titleTextFormatter: (date, locale) =>
+                          DateFormat.MMMM(locale).format(date),
                     ),
                     onPageChanged: controller.onPagesChanged,
                     calendarBuilders: CalendarBuilders(
                       dowBuilder: (context, day) {
+                        final text = DateFormat.E('id_ID').format(day);
                         if (day.weekday == DateTime.sunday) {
-                          final text = DateFormat.E().format(day);
                           return Center(
                             child: Text(
                               text,
@@ -47,7 +50,6 @@ class AttendancePage extends GetView<AttendanceController> {
                             ),
                           );
                         } else {
-                          final text = DateFormat.E().format(day);
                           return Center(
                             child: Text(
                               text,
@@ -59,6 +61,16 @@ class AttendancePage extends GetView<AttendanceController> {
                   ),
                 ),
                 Divider(),
+                const SizedBox(height: 8.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                      "${DateFormat.EEEE('id_ID').format(controller.selectedDay.value)}, ${controller.selectedDay.value.day} ${DateFormat.MMMM('id_ID').format(controller.selectedDay.value)}",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          )),
+                ),
+                const SizedBox(height: 8.0),
                 ...controller.attendanceList.map(
                   (attendance) => CustomCard(
                     title: 'Berkah Rohani',
