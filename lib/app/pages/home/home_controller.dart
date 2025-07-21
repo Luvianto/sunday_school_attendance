@@ -34,17 +34,9 @@ class HomeController extends GetxController {
   ];
 
   // 5. Add new actions for the AppBar, 'null' if no actions are required
-  final actions = {
+  final Map<HomeTab, List<Widget>?> actions = {
     HomeTab.attendance: null,
-    HomeTab.student: [
-      IconButton(
-        icon: Icon(
-          Icons.search,
-          color: Get.theme.primaryColor,
-        ),
-        onPressed: Get.find<StudentListController>().toSearch,
-      )
-    ],
+    HomeTab.student: null,
     HomeTab.profile: null,
   };
 
