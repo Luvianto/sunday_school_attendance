@@ -34,8 +34,19 @@ class HomeController extends GetxController {
   ];
 
   // 5. Add new actions for the AppBar, 'null' if no actions are required
-  final Map<HomeTab, List<Widget>?> actions = {
-    HomeTab.attendance: null,
+  final actions = {
+    HomeTab.attendance: [
+      IconButton(
+        onPressed: Get.find<AttendanceController>().resetSelectedDay,
+        icon: Text(
+          DateTime.now().day.toString(),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
     HomeTab.student: null,
     HomeTab.profile: null,
   };
