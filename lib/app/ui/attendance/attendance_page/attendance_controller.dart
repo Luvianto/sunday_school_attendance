@@ -28,6 +28,7 @@ class AttendanceController extends GetxController {
   // Function 'refresh' udah dipake, jadi namanya 'refreshPage'
   Future<void> refreshPage() async {
     isLoading.value = true;
+    attendanceList.clear();
     errorMessage.value = '';
 
     // Supaya user bisa melihat loading
@@ -68,6 +69,21 @@ class AttendanceController extends GetxController {
     isLoading.value = false;
   }
 
+  void fetchAttendanceListByDate(DateTime date) async {
+    isLoading.value = true;
+    final result = await attendanceService.getAttendanceListByDate(date);
+    if (result.isSuccess && result.isNotEmpty) {
+      attendanceList.value = result.data!;
+    }
+    if (result.isEmpty) {
+      errorMessage.value = 'Belum ada data!\nScroll ke bawah untuk refresh!';
+    }
+    if (result.isError) {
+      errorMessage.value = result.message!;
+    }
+    isLoading.value = false;
+  }
+
   void resetSelectedDay() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -95,5 +111,7 @@ class AttendanceController extends GetxController {
   void setSelectedDay(DateTime daySelected, DateTime dayFocused) {
     selectedDay.value = daySelected;
     focusedDay.value = daySelected;
+    attendanceList.clear();
+    fetchAttendanceListByDate(daySelected);
   }
 }
