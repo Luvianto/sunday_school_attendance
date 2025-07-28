@@ -60,17 +60,21 @@ class AttendancePage extends GetView<AttendanceController> {
           ),
           Divider(),
           const SizedBox(height: 8.0),
-          Obx(
-            () => Padding(
+          Obx(() {
+            final day = controller.selectedDay.value;
+            final weekday = DateFormat.EEEE('id_ID').format(day);
+            final month = DateFormat.MMMM('id_ID').format(day);
+            final year = DateFormat.y('id_ID').format(day);
+            return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                "${DateFormat.EEEE('id_ID').format(controller.selectedDay.value)}, ${controller.selectedDay.value.day} ${DateFormat.MMMM('id_ID').format(controller.selectedDay.value)} ${DateFormat.y('id_ID').format(controller.selectedDay.value)}",
+                "$weekday, $day $month $year",
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),
               ),
-            ),
-          ),
+            );
+          }),
           const SizedBox(height: 8.0),
           Obx(() {
             if (controller.attendanceList.isEmpty) {
