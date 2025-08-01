@@ -21,6 +21,7 @@ class StudentListView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
+        tileColor: isSelected ? Colors.blue.withValues(alpha: 0.1) : null,
         title: Text(studentName, style: Theme.of(context).textTheme.bodyLarge),
         leading: CircleAvatar(
           radius: 32,

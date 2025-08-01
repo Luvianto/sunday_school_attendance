@@ -61,10 +61,11 @@ class AttendancePage extends GetView<AttendanceController> {
           Divider(),
           const SizedBox(height: 8.0),
           Obx(() {
-            final day = controller.selectedDay.value;
-            final weekday = DateFormat.EEEE('id_ID').format(day);
-            final month = DateFormat.MMMM('id_ID').format(day);
-            final year = DateFormat.y('id_ID').format(day);
+            final selectedDay = controller.selectedDay.value;
+            final day = DateFormat.d('id_ID').format(selectedDay);
+            final weekday = DateFormat.EEEE('id_ID').format(selectedDay);
+            final month = DateFormat.MMMM('id_ID').format(selectedDay);
+            final year = DateFormat.y('id_ID').format(selectedDay);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(

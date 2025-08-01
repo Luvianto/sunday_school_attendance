@@ -67,11 +67,14 @@ class AttendanceDetailPage extends GetView<AttendanceDetailController> {
             }),
             const SizedBox(height: 8.0),
             Obx(() {
-              if (controller.studentAttendanceList.isEmpty) {
+              if (controller.studentList.isEmpty) {
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: Center(
-                    child: Text(controller.errorMessage.value),
+                    child: Text(
+                      controller.errorMessage.value,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 );
               }

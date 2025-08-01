@@ -17,4 +17,9 @@ class StudentAttendanceService extends FirestoreInstance {
       StudentAttendanceModel.fromFirestore,
     );
   }
+
+  Future<ServiceResult> addAttendance(
+      StudentAttendanceModel studentAttendance) async {
+    return await addDocument(collectionName, studentAttendance.toFirestore());
+  }
 }
