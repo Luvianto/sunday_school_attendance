@@ -17,7 +17,7 @@ class AttendanceFormController extends GetxController {
   var errorMessage = ''.obs;
 
   var studentList = <StudentModel>[].obs;
-  var selectedStudents = <StudentModel>[];
+  var selectedStudents = <StudentModel>[].obs;
 
   @override
   void onInit() {
@@ -49,11 +49,13 @@ class AttendanceFormController extends GetxController {
   }
 
   void selectStudent(StudentModel student) {
-    if (selectedStudents.contains(student)) {
-      selectedStudents.remove(student);
+    final newSelectedStudents = selectedStudents;
+    if (newSelectedStudents.contains(student)) {
+      newSelectedStudents.remove(student);
     } else {
-      selectedStudents.add(student);
+      newSelectedStudents.add(student);
     }
+    selectedStudents = newSelectedStudents;
   }
 
   bool isSelected(StudentModel student) {
