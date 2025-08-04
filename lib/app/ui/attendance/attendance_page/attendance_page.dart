@@ -86,17 +86,17 @@ class AttendancePage extends GetView<AttendanceController> {
                 ),
               );
             }
-            return Column(
-              children: controller.attendanceList
-                  .map(
-                    (attendance) => CustomCard(
-                      title: attendance.timestamp.toString(),
-                      subtitle: DateFormat.Hms()
-                          .format(attendance.timestamp.toDate()),
-                      onTap: () => controller.toDetail(attendance),
-                    ),
-                  )
-                  .toList(),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                children: controller.attendanceList
+                    .map((attendance) => CustomCard(
+                          title: DateFormat.Hms()
+                              .format(attendance.timestamp.toDate()),
+                          onTap: () => controller.toDetail(attendance),
+                        ))
+                    .toList(),
+              ),
             );
           }),
         ],

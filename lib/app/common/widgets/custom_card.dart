@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final void Function()? onTap;
 
   const CustomCard({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.onTap,
   });
 
@@ -41,7 +41,7 @@ class CustomCard extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    subtitle,
+                    subtitle ?? '',
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Theme.of(context).colorScheme.outlineVariant,
                         ),
