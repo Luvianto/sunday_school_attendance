@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sunday_school_attendance/app/models/attendance_model.dart';
 import 'package:sunday_school_attendance/app/routes/app_routes.dart';
 import 'package:sunday_school_attendance/app/services/attendance_service.dart';
@@ -19,20 +21,42 @@ class AttendanceController extends GetxController {
   var focusedDay = DateTime.now().obs;
   var calendarFormat = CalendarFormat.month.obs;
 
+  var day = DateFormat.d('id_ID').format(DateTime.now());
+  var weekday = DateFormat.EEEE('id_ID').format(DateTime.now());
+  var month = DateFormat.MMMM('id_ID').format(DateTime.now());
+  var year = DateFormat.y('id_ID').format(DateTime.now());
+
+  var formattedDate = "".obs;
+
+  void setFormattedDate(DateTime value) {
+    day = DateFormat.d('id_ID').format(value);
+    weekday = DateFormat.EEEE('id_ID').format(value);
+    month = DateFormat.MMMM('id_ID').format(value);
+    year = DateFormat.y('id_ID').format(value);
+    formattedDate.value = "$weekday, $day $month $year";
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
-    fetchAttendanceList();
+    final now = DateTime.now();
+    setFormattedDate(now);
+
+    final today = DateTime(now.year, now.month, now.day);
+    fetchAttendanceListByDate(today);
   }
 
   // Function 'refresh' udah dipake, jadi namanya 'refreshPage'
   Future<void> refreshPage() async {
     isLoading.value = true;
-    attendanceList.clear();
     errorMessage.value = '';
 
     // Supaya user bisa melihat loading
-    Future.delayed(Duration(seconds: 1), fetchAttendanceList);
+    Future.delayed(Duration(seconds: 2), () {
+      fetchAttendanceListByDate(selectedDay.value);
+      isLoading.value = false;
+    });
   }
 
   void toDetail(AttendanceModel selectedAttendance) {
@@ -41,7 +65,7 @@ class AttendanceController extends GetxController {
       arguments: selectedAttendance,
     )?.then((result) {
       if (result == true) {
-        fetchAttendanceList();
+        fetchAttendanceListByDate;
       }
     });
   }
@@ -49,36 +73,23 @@ class AttendanceController extends GetxController {
   void openForm() {
     Get.toNamed(AppRoutes.attendance + AppRoutes.form)?.then((result) {
       if (result == true) {
-        fetchAttendanceList();
+        fetchAttendanceListByDate;
       }
     });
   }
 
-  void fetchAttendanceList() async {
+  void fetchAttendanceListByDate([DateTime? date]) async {
+    attendanceList.clear();
+    date ??= DateTime.now();
     isLoading.value = true;
-    final result = await attendanceService.getAttendanceList();
-    if (result.isSuccess && result.isNotEmpty) {
-      attendanceList.value = result.data!;
-    }
-    if (result.isEmpty) {
-      errorMessage.value = 'Belum ada data!\nScroll ke bawah untuk refresh!';
-    }
-    if (result.isError) {
-      errorMessage.value = result.message!;
-    }
-    isLoading.value = false;
-  }
-
-  void fetchAttendanceListByDate(DateTime date) async {
-    isLoading.value = true;
+    debugPrint('Get..');
     final result = await attendanceService.getAttendanceListByDate(date);
+    debugPrint(result.data.toString());
+    debugPrint(result.message);
     if (result.isSuccess && result.isNotEmpty) {
+      debugPrint('Success..');
       attendanceList.value = result.data!;
-    }
-    if (result.isEmpty) {
-      errorMessage.value = 'Belum ada data!\nScroll ke bawah untuk refresh!';
-    }
-    if (result.isError) {
+    } else {
       errorMessage.value = result.message!;
     }
     isLoading.value = false;
@@ -90,17 +101,23 @@ class AttendanceController extends GetxController {
 
     selectedDay.value = today;
     focusedDay.value = today;
+    setFormattedDate(today);
   }
 
-  void onPagesChanged(DateTime dayFocused) {
+  void onPageChanged(DateTime dayFocused) {
     final now = DateTime.now();
     if (now.year == dayFocused.year && now.month == dayFocused.month) {
-      selectedDay.value = DateTime(now.year, now.month, now.day);
-      focusedDay.value = DateTime(now.year, now.month, now.day);
+      final today = DateTime(now.year, now.month, now.day);
+      selectedDay.value = today;
+      focusedDay.value = today;
+      setFormattedDate(today);
+      fetchAttendanceListByDate(today);
     } else {
       final firstDayOfMonth = DateTime(dayFocused.year, dayFocused.month, 1);
       selectedDay.value = firstDayOfMonth;
       focusedDay.value = firstDayOfMonth;
+      setFormattedDate(firstDayOfMonth);
+      fetchAttendanceListByDate(firstDayOfMonth);
     }
   }
 
@@ -108,10 +125,11 @@ class AttendanceController extends GetxController {
     calendarFormat.value = format;
   }
 
-  void setSelectedDay(DateTime daySelected, DateTime dayFocused) {
+  void onDaySelected(DateTime daySelected, DateTime dayFocused) {
     selectedDay.value = daySelected;
     focusedDay.value = daySelected;
     attendanceList.clear();
+    setFormattedDate(daySelected);
     fetchAttendanceListByDate(daySelected);
   }
 }

@@ -18,58 +18,23 @@ class AttendancePage extends GetView<AttendanceController> {
           Obx(
             () => SizedBox(
               height: 400,
-              child: TableCalendar(
-                locale: 'id_ID',
+              child: CustomCalendar(
                 firstDay: controller.firstDay,
                 lastDay: controller.lastDay,
-                startingDayOfWeek: StartingDayOfWeek.monday,
                 focusedDay: controller.focusedDay.value,
-                rangeSelectionMode: RangeSelectionMode.disabled,
-                selectedDayPredicate: (day) {
-                  return isSameDay(controller.selectedDay.value, day);
-                },
-                onDaySelected: controller.setSelectedDay,
-                headerStyle: HeaderStyle(
-                  titleCentered: true,
-                  formatButtonVisible: false,
-                  titleTextFormatter: (date, locale) =>
-                      DateFormat.MMMM(locale).format(date),
-                ),
-                onPageChanged: controller.onPagesChanged,
-                calendarBuilders: CalendarBuilders(
-                  dowBuilder: (context, day) {
-                    final text = DateFormat.E('id_ID').format(day);
-                    if (day.weekday == DateTime.sunday) {
-                      return Center(
-                        child: Text(
-                          text,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Text(
-                          text,
-                        ),
-                      );
-                    }
-                  },
-                ),
+                selectedDay: controller.selectedDay.value,
+                onDaySelected: controller.onDaySelected,
+                onPageChanged: controller.onPageChanged,
               ),
             ),
           ),
           Divider(),
           const SizedBox(height: 8.0),
           Obx(() {
-            final selectedDay = controller.selectedDay.value;
-            final day = DateFormat.d('id_ID').format(selectedDay);
-            final weekday = DateFormat.EEEE('id_ID').format(selectedDay);
-            final month = DateFormat.MMMM('id_ID').format(selectedDay);
-            final year = DateFormat.y('id_ID').format(selectedDay);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                "$weekday, $day $month $year",
+                controller.formattedDate.value,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -81,8 +46,11 @@ class AttendancePage extends GetView<AttendanceController> {
             if (controller.attendanceList.isEmpty) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.25,
-                child: const Center(
-                  child: Text('Belum ada absensi!'),
+                child: Center(
+                  child: Text(
+                    controller.errorMessage.value,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             }
@@ -91,7 +59,8 @@ class AttendancePage extends GetView<AttendanceController> {
               child: Column(
                 children: controller.attendanceList
                     .map((attendance) => CustomCard(
-                          title: DateFormat.Hms()
+                          title: 'Judul Attendance',
+                          subtitle: DateFormat.Hms()
                               .format(attendance.timestamp.toDate()),
                           onTap: () => controller.toDetail(attendance),
                         ))
@@ -100,6 +69,66 @@ class AttendancePage extends GetView<AttendanceController> {
             );
           }),
         ],
+      ),
+    );
+  }
+}
+
+class CustomCalendar extends StatelessWidget {
+  final DateTime firstDay;
+  final DateTime lastDay;
+  final DateTime focusedDay;
+  final DateTime selectedDay;
+  final void Function(DateTime, DateTime)? onDaySelected;
+  final void Function(DateTime)? onPageChanged;
+  const CustomCalendar({
+    super.key,
+    required this.firstDay,
+    required this.lastDay,
+    required this.focusedDay,
+    required this.selectedDay,
+    this.onDaySelected,
+    this.onPageChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCalendar(
+      locale: 'id_ID',
+      firstDay: firstDay,
+      lastDay: lastDay,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      focusedDay: focusedDay,
+      rangeSelectionMode: RangeSelectionMode.disabled,
+      selectedDayPredicate: (day) {
+        return isSameDay(selectedDay, day);
+      },
+      onDaySelected: onDaySelected,
+      headerStyle: HeaderStyle(
+        titleCentered: true,
+        formatButtonVisible: false,
+        titleTextFormatter: (date, locale) =>
+            DateFormat.MMMM(locale).format(date),
+      ),
+      onPageChanged: onPageChanged,
+      calendarBuilders: CalendarBuilders(
+        dowBuilder: (context, day) {
+          final text = DateFormat.E('id_ID').format(day);
+          if (day.weekday == DateTime.sunday) {
+            return Center(
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          } else {
+            return Center(
+              child: Text(
+                text,
+              ),
+            );
+          }
+        },
       ),
     );
   }
