@@ -87,7 +87,7 @@ class AttendanceFormController extends GetxController {
         batch.set(studentAttendanceRef, studentAttendance.toFirestore());
       }
       await batch.commit();
-      Get.back();
+      Get.back(result: true);
     } catch (e) {
       Get.snackbar('Error', 'Mohon coba kembali nanti',
           snackPosition: SnackPosition.BOTTOM);

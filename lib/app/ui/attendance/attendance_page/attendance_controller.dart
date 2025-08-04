@@ -14,6 +14,8 @@ class AttendanceController extends GetxController {
 
   var attendanceList = <AttendanceModel>[].obs;
 
+  final now = DateTime.now();
+
   final firstDay = DateTime.utc(2010, 10, 16);
   final lastDay = DateTime.utc(2030, 3, 14);
 
@@ -40,10 +42,8 @@ class AttendanceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final now = DateTime.now();
-    setFormattedDate(now);
-
     final today = DateTime(now.year, now.month, now.day);
+    setFormattedDate(now);
     fetchAttendanceListByDate(today);
   }
 
@@ -80,14 +80,12 @@ class AttendanceController extends GetxController {
 
   void fetchAttendanceListByDate([DateTime? date]) async {
     attendanceList.clear();
-    date ??= DateTime.now();
+    date ??= DateTime(now.year, now.month, now.day);
     isLoading.value = true;
-    debugPrint('Get..');
     final result = await attendanceService.getAttendanceListByDate(date);
     debugPrint(result.data.toString());
     debugPrint(result.message);
     if (result.isSuccess && result.isNotEmpty) {
-      debugPrint('Success..');
       attendanceList.value = result.data!;
     } else {
       errorMessage.value = result.message!;
